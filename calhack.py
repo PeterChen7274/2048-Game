@@ -1,4 +1,4 @@
-from random import getrandbits, randint
+from random import randint
 class lister:
     def __init__(self):
         self.x=0
