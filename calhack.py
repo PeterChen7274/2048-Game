@@ -10,11 +10,12 @@ print(y)
 def mergable(lst,direction):
     if direction==-1:
         lst.reverse()
-    for x in range(1,len(lst)-1):
+    for x in range(0,len(lst)-1):
         if lst[x]==lst[x+1] and lst[x]!=0:
             return True
-        if (lst[x]==0 and lst[x-1]!=0) or (lst[x]!=0 and lst[x+1]==0):
-            return True
+        if x>0:
+            if (lst[x]==0 and lst[x-1]!=0) or (lst[x]!=0 and lst[x+1]==0):
+                return True
     return False
 
     
