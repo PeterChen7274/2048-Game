@@ -247,19 +247,7 @@ class grid:
 g=gamestate()
 grid1=grid()
 g.start_game(grid1)
-grid1.up(g)
-grid1.up(g)
-grid1.up(g)
-grid1.up(g)
-grid1.down(g)
-grid1.down(g)
-grid1.down(g)
-grid1.down(g)
-grid1.left(g)
-grid1.left(g)
-grid1.left(g)
-grid1.right(g)
-grid1.right(g)
+
 
 
 
