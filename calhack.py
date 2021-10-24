@@ -1,11 +1,4 @@
 from random import randint
-class lister:
-    def __init__(self):
-        self.x=0
-    def __str__(self):
-        return f"[[1,2,3]\n[2,3,4]\n[3,4,5]]"
-y=lister()
-print(y)
 
 def mergable(lst,direction):
     if direction==-1:
