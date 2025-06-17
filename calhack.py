@@ -2,15 +2,15 @@ from random import randint
 
 def mergable(original, direction):
     lst = original[:]
-    if direction==-1:
+    if direction == -1:
         lst.reverse()
     for x in range(0, len(lst)-1):
-        if (lst[x] == lst[x+1] and lst[x]!=0) or (lst[x] != 0 and lst[x+1] == 0):
+        if (lst[x] == lst[x + 1] and lst[x] != 0) or (lst[x] != 0 and lst[x + 1] == 0):
             return True
     return False
 
     
-class gamestate:
+class Gamestate:
     def __init__(self, grid, undo_limit=10):
         self.score = 0
         self.record = 0
@@ -66,7 +66,7 @@ class gamestate:
     def game_over(self):
         print(f"Game over, your record is {self.record} and your score is {self.score}! Type g.start_game() to restart a new game or g.undo() to fix your mistake!")
 
-class grid:
+class Grid:
     def __init__(self, n=4):
        self.layout=[[0 for i in range(n)] for j in range(n)]
        self.scale=n
@@ -234,9 +234,9 @@ class grid:
 
     def right(self):
         if self.rightable():
+            score = 0
+            record = 0
             for x in range(self.scale):
-                score = 0
-                record = 0
                 row = self.row(x)
                 new_row = []
                 if row[-1]:
@@ -263,8 +263,8 @@ class grid:
 
 
 
-g = grid()
-game = gamestate(g)
+g = Grid()
+game = Gamestate(g)
 game.start_game()
 
 print("Enter action (up/down/left/right/undo or quit)")
