@@ -286,25 +286,6 @@ class Grid:
 
 
 
-# g = Grid()
-# game = Gamestate(g)
-# game.start_game()
-
-# print("Enter action (up/down/left/right/undo or quit)")
-# while True:
-#     cmd = input(">").strip().lower()
-#     if cmd == "quit":
-#         break
-#     if cmd in ("up", "down", "left", "right"):
-#         game.move(cmd)
-#         print(game.score)
-#         print(game.record)
-#     elif cmd == "undo":
-#         game.undo()
-#     else:
-#         print("Invalid move. Try: up, down, left, right, or undo")
-
-
 
 
 
