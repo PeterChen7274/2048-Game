@@ -51,17 +51,40 @@
     .tile[data-value="512"] { background-color: #edc850; color: #fff; font-size: 20px; }
     .tile[data-value="1024"] { background-color: #edc53f; color: #fff; font-size: 18px; }
     .tile[data-value="2048"] { background-color: #edc22e; color: #fff; font-size: 18px; }
+    .buttons {
+      margin-top: 20px;
+    }
+    button {
+      margin: 0 10px;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .status {
+      margin-top: 15px;
+      font-size: 16px;
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <h1>2048</h1>
   <div class="score">Score: <span id="score">0</span></div>
   <div class="grid" id="grid"></div>
+  <div class="buttons">
+    <button id="undo-btn">Undo</button>
+    <button id="restart-btn">Restart</button>
+  </div>
+  <div id="status" class="status"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const gridElem = document.getElementById('grid');
       const scoreElem = document.getElementById('score');
+      const statusElem = document.getElementById('status');
+      const undoBtn = document.getElementById('undo-btn');
+      const restartBtn = document.getElementById('restart-btn');
 
       function createGrid(grid) {
         gridElem.innerHTML = '';
@@ -87,6 +110,31 @@
         const data = await res.json();
         createGrid(data.grid);
         scoreElem.textContent = data.score;
+        if (data.status === 'lost') {
+          statusElem.textContent = 'Game Over!';
+        } else {
+          statusElem.textContent = '';
+        }
+      }
+
+      async function undoMove() {
+        const res = await fetch('/undo', {
+          method: 'POST'
+        });
+        const data = await res.json();
+        createGrid(data.grid);
+        scoreElem.textContent = data.score;
+        statusElem.textContent = '';
+      }
+
+      async function restartGame() {
+        const res = await fetch('/restart', {
+          method: 'POST'
+        });
+        const data = await res.json();
+        createGrid(data.grid);
+        scoreElem.textContent = data.score;
+        statusElem.textContent = '';
       }
 
       document.addEventListener('keydown', (e) => {
@@ -100,6 +148,9 @@
           fetchState(map[e.key]);
         }
       });
+
+      undoBtn.addEventListener('click', undoMove);
+      restartBtn.addEventListener('click', restartGame);
 
       fetchState();
     });

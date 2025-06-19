@@ -20,16 +20,22 @@ class Gamestate:
 
     def start_game(self):
         self.grid.start()
-        # print(self.grid)
+        self.score = 0
+        self.record = 0
+        self.history = []
 
     def undo(self):
         if self.history:
             grid, self.score, self.record = self.history.pop()
             self.grid.change_grid(grid)
-            # print(self.grid)
         else:
             print("Can not undo further")
-        
+    
+    def get_score(self):
+        return self.score
+    
+    def get_grid(self):
+        return self.grid.get_grid()
     
     def move(self, dir):
         res = 0
@@ -48,17 +54,19 @@ class Gamestate:
         else:
             print("invalid move")
         if res != None:
-            # print(self.grid)
             self.score += res
             self.record = max(self.record, record)
             if len(self.history) > self.undo_limit:
                 self.history.pop(0)
-            if self.grid.stuck():
+            if self.lost():
                 self.game_over()
             if self.record == 2048:
                 self.victory()
         else:
             self.history.pop()
+    
+    def lost(self):
+        return self.grid.stuck()
             
     def victory(self):
         print(f"You've won(kinda), Yeah! Type g.start_game() to restart a new game or continue playing to get bigger tiles")

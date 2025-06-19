@@ -18,6 +18,23 @@ def move():
         game.move(direction)
     return jsonify({
         "grid": game.grid.get_grid(),
+        "score": game.score,
+        "status": "lost" if game.lost() else "ok"
+    })
+
+@app.route("/undo", methods=["POST"])
+def undo():
+    game.undo()
+    return jsonify({
+        "grid": game.grid.get_grid(),
+        "score": game.score
+    })
+
+@app.route("/restart", methods=["POST"])
+def restart():
+    game.start_game()
+    return jsonify({
+        "grid": game.grid.get_grid(),
         "score": game.score
     })
 
