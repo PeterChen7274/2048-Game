@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2048 Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #faf8ef;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .score {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      grid-gap: 10px;
+      background-color: #bbada0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .tile {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: #cdc1b4;
+      border-radius: 3px;
+    }
+    .tile[data-value="2"] { background-color: #eee4da; }
+    .tile[data-value="4"] { background-color: #ede0c8; }
+    .tile[data-value="8"] { background-color: #f2b179; color: #fff; }
+    .tile[data-value="16"] { background-color: #f59563; color: #fff; }
+    .tile[data-value="32"] { background-color: #f67c5f; color: #fff; }
+    .tile[data-value="64"] { background-color: #f65e3b; color: #fff; }
+    .tile[data-value="128"] { background-color: #edcf72; color: #fff; font-size: 20px; }
+    .tile[data-value="256"] { background-color: #edcc61; color: #fff; font-size: 20px; }
+    .tile[data-value="512"] { background-color: #edc850; color: #fff; font-size: 20px; }
+    .tile[data-value="1024"] { background-color: #edc53f; color: #fff; font-size: 18px; }
+    .tile[data-value="2048"] { background-color: #edc22e; color: #fff; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>2048</h1>
+  <div class="score">Score: <span id="score">0</span></div>
+  <div class="grid" id="grid"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const gridElem = document.getElementById('grid');
+      const scoreElem = document.getElementById('score');
+
+      function createGrid(grid) {
+        gridElem.innerHTML = '';
+        for (let row of grid) {
+          for (let cell of row) {
+            const div = document.createElement('div');
+            div.className = 'tile';
+            if (cell !== 0) {
+              div.textContent = cell;
+              div.dataset.value = cell;
+            }
+            gridElem.appendChild(div);
+          }
+        }
+      }
+
+      async function fetchState(direction = null) {
+        const res = await fetch('/move', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ direction })
+        });
+        const data = await res.json();
+        createGrid(data.grid);
+        scoreElem.textContent = data.score;
+      }
+
+      document.addEventListener('keydown', (e) => {
+        const map = {
+          ArrowUp: 'up',
+          ArrowDown: 'down',
+          ArrowLeft: 'left',
+          ArrowRight: 'right'
+        };
+        if (map[e.key]) {
+          fetchState(map[e.key]);
+        }
+      });
+
+      fetchState();
+    });
+  </script>
+</body>
+</html>

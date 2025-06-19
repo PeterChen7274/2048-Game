@@ -20,13 +20,13 @@ class Gamestate:
 
     def start_game(self):
         self.grid.start()
-        print(self.grid)
+        # print(self.grid)
 
     def undo(self):
         if self.history:
             grid, self.score, self.record = self.history.pop()
             self.grid.change_grid(grid)
-            print(self.grid)
+            # print(self.grid)
         else:
             print("Can not undo further")
         
@@ -48,7 +48,7 @@ class Gamestate:
         else:
             print("invalid move")
         if res != None:
-            print(self.grid)
+            # print(self.grid)
             self.score += res
             self.record = max(self.record, record)
             if len(self.history) > self.undo_limit:
@@ -263,23 +263,23 @@ class Grid:
 
 
 
-g = Grid()
-game = Gamestate(g)
-game.start_game()
+# g = Grid()
+# game = Gamestate(g)
+# game.start_game()
 
-print("Enter action (up/down/left/right/undo or quit)")
-while True:
-    cmd = input(">").strip().lower()
-    if cmd == "quit":
-        break
-    if cmd in ("up", "down", "left", "right"):
-        game.move(cmd)
-        print(game.score)
-        print(game.record)
-    elif cmd == "undo":
-        game.undo()
-    else:
-        print("Invalid move. Try: up, down, left, right, or undo")
+# print("Enter action (up/down/left/right/undo or quit)")
+# while True:
+#     cmd = input(">").strip().lower()
+#     if cmd == "quit":
+#         break
+#     if cmd in ("up", "down", "left", "right"):
+#         game.move(cmd)
+#         print(game.score)
+#         print(game.record)
+#     elif cmd == "undo":
+#         game.undo()
+#     else:
+#         print("Invalid move. Try: up, down, left, right, or undo")
 
 
 
