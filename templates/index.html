@@ -75,6 +75,7 @@
   <div class="buttons">
     <button id="undo-btn">Undo</button>
     <button id="restart-btn">Restart</button>
+    <button id="play-btn">Auto Play</button>
   </div>
   <div id="status" class="status"></div>
 
@@ -136,6 +137,32 @@
         scoreElem.textContent = data.score;
         statusElem.textContent = '';
       }
+
+      let autoplayInterval = null;
+      const playBtn = document.getElementById('play-btn');
+      playBtn.addEventListener('click', () => {
+        if (autoplayInterval) {
+          clearInterval(autoplayInterval);
+          autoplayInterval = null;
+          playBtn.textContent = 'Start Auto';
+        } else {
+          autoplayInterval = setInterval(async () => {
+            const res = await fetch('/autoplay', { method: 'POST' });
+            const data = await res.json();
+            createGrid(data.grid);
+            scoreElem.textContent = data.score;
+            if (data.status === 'lost') {
+              statusElem.textContent = 'Game Over!';
+              clearInterval(autoplayInterval);
+              autoplayInterval = null;
+              playBtn.textContent = 'Start Auto';
+            } else {
+              statusElem.textContent = '';
+            }
+          }, 200);
+          playBtn.textContent = 'Stop Auto';
+        }
+      });
 
       document.addEventListener('keydown', (e) => {
         const map = {

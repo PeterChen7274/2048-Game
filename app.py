@@ -38,5 +38,14 @@ def restart():
         "score": game.score
     })
 
+@app.route("/autoplay", methods=["POST"])
+def autoplay():
+    game.random_move()
+    return jsonify({
+        "grid": game.grid.get_grid(),
+        "score": game.score,
+        "status": "lost" if game.grid.stuck() else "ok"
+    })
+
 if __name__ == "__main__":
     app.run(debug=False)

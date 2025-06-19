@@ -1,4 +1,5 @@
 from random import randint
+import time, random
 
 def mergable(original, direction):
     lst = original[:]
@@ -73,6 +74,20 @@ class Gamestate:
 
     def game_over(self):
         print(f"Game over, your record is {self.record} and your score is {self.score}! Type g.start_game() to restart a new game or g.undo() to fix your mistake!")
+
+    def random_move(self):
+        move = random.choices(
+                ["left", "down", "right", "up"],
+                weights=[45, 45, 5, 5]
+            )[0]
+        self.move(move)
+
+    def auto_play(self):
+        while True:
+            time.sleep(0.2)
+            self.random_move()
+            if self.lost():
+                break
 
 class Grid:
     def __init__(self, n=4):
